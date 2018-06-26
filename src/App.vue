@@ -1,41 +1,38 @@
 <template>
-  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-    <header class="mdl-layout__header">
-      <div class="mdl-layout__header-row">
-        <span class="mdl-layout-title">CropChat</span>
-      </div>
-    </header>
-    <div class="mdl-layout__drawer">
-      <span class="mdl-layout-title">CropChat</span>
-      <nav class="mdl-navigation">
-        <router-link class="mdl-navigation__link" to="/" @click.native="hideMenu">Home</router-link>
-        <router-link class="mdl-navigation__link" to="/creatPost" @click.native="hideMenu">Create new post</router-link>
-        <router-link class="mdl-navigation__link" to="/listPost" @click.native="hideMenu">Show all post</router-link>
+  <div>
+    <b-navbar toggleable="md" type="dark" variant="info">
+      <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+        <b-navbar-brand href="#">Demo App</b-navbar-brand>
+        <b-collapse is-nav id="nav_collapse">
 
-      </nav>
-    </div>
-    <main class="mdl-layout__content">
-      <div class="page-content">
-        <router-view></router-view>
-      </div>
-    </main>
+        <b-navbar-nav class="ml-auto">
+          <b-navbar-nav>
+            <b-nav-item v-b-modal.Auth>Signup</b-nav-item>
+          </b-navbar-nav>
+        </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
+    
+    <Authentication></Authentication>
+
+    <b-row style="margin: 0px">
+      <router-view></router-view>
+    </b-row>
+
   </div>
 </template>
 
 <script>
-  require('material-design-lite')
+  import 'bootstrap/dist/css/bootstrap.css'
+  import 'bootstrap-vue/dist/bootstrap-vue.css'
+  import AuthModal from './components/AuthModal.vue'
+  
   export default {
     name: 'app',
+    components: {
+      'Authentication': AuthModal
+    },
     methods: {
-      hideMenu: function () {
-        document.getElementsByClassName('mdl-layout__drawer')[0].classList.remove('is-visible')
-        document.getElementsByClassName('mdl-layout__obfuscator')[0].classList.remove('is-visible')
-      }
     }
   }
 </script>
-
-<style>
-  @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
-  @import url('https://code.getmdl.io/1.2.1/material.blue-red.min.css');
-</style>
