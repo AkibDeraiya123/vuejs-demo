@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HomeView from '@/components/HomeView'
+import contactView from '@/components/ContactView'
 import SignupView from '@/components/SignupView'
-import LoginView from '@/components/LoginView'
+import resetPasswordView from '@/components/reset-password'
 import CreatePostView from '@/components/CreatePostView'
 import ListPost from '@/components/ListPost'
 
@@ -21,9 +22,9 @@ export default new Router({
       component: SignupView
     },
     {
-      path: '/login',
-      name: 'login',
-      component: LoginView
+      path: '/reset-password/:passwordString',
+      name: 'reset',
+      component: resetPasswordView
     },
     {
       path: '/creatPost',
@@ -34,6 +35,11 @@ export default new Router({
       path: '/listPost',
       name: 'listPost',
       component: ListPost
+    },
+    {
+      path: '/contact-us',
+      name: 'contact-us',
+      component: contactView
     }
   ]
 })

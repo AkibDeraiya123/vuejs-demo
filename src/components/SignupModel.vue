@@ -1,7 +1,7 @@
 <!-- Modal Component -->
 <template>
 	<b-form @submit="onSubmit" @reset="onReset">
-  	<b-modal @shown="onReset" hide-footer id="Auth" title="Signup">
+  	<b-modal @shown="onReset" hide-footer id="signupModel" title="Signup">
       <b-form-group label="Fullname:"
         label-for="fullName">
         	<b-form-input id="fullName"
@@ -67,6 +67,10 @@
 </template>
 
 <script>
+
+import Request from '../http-request'
+import config from '../../config'
+
 export default {
   data () {
     return {
@@ -96,7 +100,14 @@ export default {
   methods: {
     onSubmit (evt) {
       evt.preventDefault()
-      alert(JSON.stringify(this.form))
+      // Call API for signup
+      Request.post(`${config.apiBaseUrl}/signup`, this.form, {})
+        .then(response => {
+          console.log('response', response)
+        })
+        .catch(e => {
+          console.log('e', e)
+        })
     },
     onReset (evt) {
       evt.preventDefault()
