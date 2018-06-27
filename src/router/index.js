@@ -6,6 +6,7 @@ import SignupView from '@/components/SignupView'
 import resetPasswordView from '@/components/reset-password'
 import CreatePostView from '@/components/CreatePostView'
 import ListPost from '@/components/ListPost'
+import Authentication from '../auth'
 
 Vue.use(Router)
 
@@ -29,6 +30,7 @@ export default new Router({
     {
       path: '/creatPost',
       name: 'creatPost',
+      beforeEnter: Authentication.requireAuth,
       component: CreatePostView
     },
     {
