@@ -69,7 +69,7 @@
 <script>
 
 import Request from '../http-request'
-import config from '../../config'
+import config from '../../config-app'
 
 export default {
   data () {

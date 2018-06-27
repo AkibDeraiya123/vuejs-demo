@@ -7,6 +7,8 @@ import resetPasswordView from '@/components/reset-password'
 import CreatePostView from '@/components/CreatePostView'
 import ListPost from '@/components/ListPost'
 import Authentication from '../auth'
+import EmailVerifyView from '@/components/EmailVerifyView'
+import PageNotFoundView from '@/components/PageNotFoundView'
 
 Vue.use(Router)
 
@@ -28,6 +30,11 @@ export default new Router({
       component: resetPasswordView
     },
     {
+      path: '/email-verify/:emailHash',
+      name: 'emailVerify',
+      component: EmailVerifyView
+    },
+    {
       path: '/creatPost',
       name: 'creatPost',
       beforeEnter: Authentication.requireAuth,
@@ -42,6 +49,10 @@ export default new Router({
       path: '/contact-us',
       name: 'contact-us',
       component: contactView
+    },
+    {
+      path: '*',
+      component: PageNotFoundView
     }
   ]
 })
