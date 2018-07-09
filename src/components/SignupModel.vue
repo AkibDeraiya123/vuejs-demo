@@ -4,37 +4,54 @@
   	<b-modal @shown="onReset" hide-footer id="signupModel" title="Signup">
       <b-form-group label="Fullname:"
         label-for="fullName">
-        	<b-form-input id="fullName"
+        	<b-form-input 
+            name="fullName"
+            id="fullName"
             type="text"
             v-model="form.fullName"
-            required
+            v-validate="'required'"
+            :class="{'input': true, 'invalid-input': errors.has('fullName') }"
             placeholder="Enter Fullname">
         	</b-form-input>
+
+          <div v-show="errors.has('fullName')" class="errorDiv">
+            <icon name="exclamation-triangle"></icon>
+            <span>{{ errors.first('fullName') }}</span>
+          </div>
       </b-form-group>
 
       <b-form-group label="Sex: " label-for="sex">
-	      <b-form-radio-group id="sex"
+	      <b-form-radio-group 
+          name="sexList"
+          v-validate="'required'"
+          id="sex"
           :options="sexList"
-          required
           v-model="form.sex">
 	      </b-form-radio-group>
+        <div v-show="errors.has('sexList')" class="errorDiv">
+          <icon name="exclamation-triangle"></icon>
+          <span>{{ errors.first('sexList') }}</span>
+        </div>
 	    </b-form-group>
       
-      <b-form-group label="Email:"
-        label-for="email">
-     	 		<b-form-input id="email"
+      <b-form-group label="Email:" label-for="email">
+     	 		<b-form-input 
+            id="email"
+            v-validate="'required|email'"
             type="email"
             v-model="form.email"
-            required
             placeholder="Enter email">
         </b-form-input>
+        <div v-show="errors.has('email')" class="errorDiv">
+          <icon name="exclamation-triangle"></icon>
+          <span>{{ errors.first('email') }}</span>
+        </div>
       </b-form-group>
 
       <b-form-group label="Country"
         label-for="country">
         <b-form-select id="country"
           :options="countryList"
-          required
           v-model="form.country">
         </b-form-select>
       </b-form-group>
@@ -44,9 +61,12 @@
      	 		<b-form-input id="phone"
             type="text"
             v-model="form.phone"
-            required
             placeholder="Enter Phone number">
         </b-form-input>
+        <div v-show="errors.has('fullName')" class="errorDiv">
+          <icon name="exclamation-triangle"></icon>
+          <span>{{ errors.first('fullName') }}</span>
+        </div>
       </b-form-group>
 
       <b-form-group label="Password:"
@@ -54,9 +74,12 @@
      	 		<b-form-input id="password"
             type="password"
             v-model="form.password"
-            required
             placeholder="Enter Password">
         </b-form-input>
+        <div v-show="errors.has('fullName')" class="errorDiv">
+          <icon name="exclamation-triangle"></icon>
+          <span>{{ errors.first('fullName') }}</span>
+        </div>
       </b-form-group>
       <div style="text-align: center;">
 	      <b-button type="submit" variant="primary">Submit</b-button>
@@ -68,8 +91,8 @@
 
 <script>
 
-import Request from '../http-request'
-import config from '../../config-app'
+// import Request from '../http-request'
+// import config from '../../config-app'
 
 export default {
   data () {
@@ -79,7 +102,7 @@ export default {
         email: '',
         phone: '',
         password: '',
-        sex: 'male',
+        sex: '',
         country: ''
       },
       countryList: [
@@ -100,14 +123,24 @@ export default {
   methods: {
     onSubmit (evt) {
       evt.preventDefault()
+      this.$validator.validateAll().then((result) => {
+        if (result) {
+          // eslint-disable-next-line
+          alert('Form Submitted!')
+          return
+        }
+
+        alert('Correct them errors!')
+      })
+
       // Call API for signup
-      Request.post(`${config.apiBaseUrl}/signup`, this.form, {})
-        .then(response => {
-          console.log('response', response)
-        })
-        .catch(e => {
-          console.log('e', e)
-        })
+      // Request.post(`${config.apiBaseUrl}/signup`, this.form, {})
+      //   .then(response => {
+      //     console.log('response', response)
+      //   })
+      //   .catch(e => {
+      //     console.log('e', e)
+      //   })
     },
     onReset (evt) {
       evt.preventDefault()
@@ -116,10 +149,19 @@ export default {
         email: '',
         phone: '',
         password: '',
-        sex: 'male',
+        sex: '',
         country: ''
       }
     }
   }
 }
 </script>
+
+<style>
+.invalid-input {
+  border: 1px solid red;
+}
+.errorDiv {
+  color: red;
+}
+</style>
