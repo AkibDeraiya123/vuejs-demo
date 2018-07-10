@@ -2,13 +2,13 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import HomeView from '@/components/HomeView'
 import contactView from '@/components/ContactView'
-import SignupView from '@/components/SignupView'
 import resetPasswordView from '@/components/reset-password'
 import CreatePostView from '@/components/CreatePostView'
 import ListPost from '@/components/ListPost'
 import Authentication from '../auth'
 import EmailVerifyView from '@/components/EmailVerifyView'
 import PageNotFoundView from '@/components/PageNotFoundView'
+import HomeAfterLoginView from '@/components/HomeAfterLoginView'
 
 Vue.use(Router)
 
@@ -17,12 +17,7 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: HomeView
-    },
-    {
-      path: '/signup',
-      name: 'signup',
-      component: SignupView
+      component: Authentication.isLoggedIn() ? HomeAfterLoginView : HomeView
     },
     {
       path: '/reset-password/:passwordString',

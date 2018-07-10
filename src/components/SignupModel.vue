@@ -34,51 +34,72 @@
         </div>
 	    </b-form-group>
       
-      <b-form-group label="Email:" label-for="email">
-     	 		<b-form-input 
+      <b-form-group label="Email:"
+        label-for="email">
+          <b-form-input 
+            name="email"
             id="email"
-            v-validate="'required|email'"
-            type="email"
+            type="text"
             v-model="form.email"
-            placeholder="Enter email">
-        </b-form-input>
-        <div v-show="errors.has('email')" class="errorDiv">
-          <icon name="exclamation-triangle"></icon>
-          <span>{{ errors.first('email') }}</span>
-        </div>
+            v-validate="'required|email'"
+            :class="{'input': true, 'invalid-input': errors.has('email') }"
+            placeholder="Enter Email">
+          </b-form-input>
+
+          <div v-show="errors.has('email')" class="errorDiv">
+            <icon name="exclamation-triangle"></icon>
+            <span>{{ errors.first('email') }}</span>
+          </div>
       </b-form-group>
 
       <b-form-group label="Country"
         label-for="country">
-        <b-form-select id="country"
+        <b-form-select
           :options="countryList"
+          name="country"
+          v-validate="'required'"
+          id="country"
+          :class="{'input': true, 'invalid-input': errors.has('country') }"
           v-model="form.country">
         </b-form-select>
+
+        <div v-show="errors.has('country')" class="errorDiv">
+          <icon name="exclamation-triangle"></icon>
+          <span>{{ errors.first('country') }}</span>
+        </div>
       </b-form-group>
 
       <b-form-group label="Phone Number:"
         label-for="phone">
-     	 		<b-form-input id="phone"
+     	 		<b-form-input 
+            id="phone"
             type="text"
+            name="phone"
+            v-validate="'required|numeric'"
+            :class="{'input': true, 'invalid-input': errors.has('phone') }"
             v-model="form.phone"
             placeholder="Enter Phone number">
         </b-form-input>
-        <div v-show="errors.has('fullName')" class="errorDiv">
+        <div v-show="errors.has('phone')" class="errorDiv">
           <icon name="exclamation-triangle"></icon>
-          <span>{{ errors.first('fullName') }}</span>
+          <span>{{ errors.first('phone') }}</span>
         </div>
       </b-form-group>
 
       <b-form-group label="Password:"
         label-for="password">
-     	 		<b-form-input id="password"
+     	 		<b-form-input 
+            id="password"
             type="password"
+            name="password"
+            v-validate="'required'"
+            :class="{'input': true, 'invalid-input': errors.has('password') }"
             v-model="form.password"
             placeholder="Enter Password">
         </b-form-input>
-        <div v-show="errors.has('fullName')" class="errorDiv">
+        <div v-show="errors.has('password')" class="errorDiv">
           <icon name="exclamation-triangle"></icon>
-          <span>{{ errors.first('fullName') }}</span>
+          <span>{{ errors.first('password') }}</span>
         </div>
       </b-form-group>
       <div style="text-align: center;">
@@ -127,10 +148,10 @@ export default {
         if (result) {
           // eslint-disable-next-line
           alert('Form Submitted!')
-          return
+          // return fa
         }
 
-        alert('Correct them errors!')
+        // alert('Correct them errors!')
       })
 
       // Call API for signup

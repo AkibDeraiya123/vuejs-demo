@@ -5,22 +5,39 @@
     	<b-modal @shown="onReset" hide-footer id="loginModel" title="Login" ref="LoginModelShow">      
         <b-form-group label="Email:"
           label-for="email">
-       	 		<b-form-input id="email"
-              type="email"
+       	 		<b-form-input 
+              name="email"
+              id="email"
+              type="text"
               v-model="form.email"
-              required
+              v-validate="'required|email'"
+              :class="{'input': true, 'invalid-input': errors.has('email') }"
               placeholder="Enter email">
           </b-form-input>
+
+          <div v-show="errors.has('email')" class="errorDiv">
+            <icon name="exclamation-triangle"></icon>
+            <span>{{ errors.first('email') }}</span>
+          </div>
         </b-form-group>
 
         <b-form-group label="Password:"
           label-for="password">
-       	 		<b-form-input id="password"
+       	 		<b-form-input 
+              name="password"
+              id="password"
               type="password"
               v-model="form.password"
-              required
+              v-validate="'required'"
+              :class="{'input': true, 'invalid-input': errors.has('password') }"
               placeholder="Enter Password">
           </b-form-input>
+
+          <div v-show="errors.has('password')" class="errorDiv">
+            <icon name="exclamation-triangle"></icon>
+            <span>{{ errors.first('password') }}</span>
+          </div>
+
         </b-form-group>
 
         <b-link @click="hideLoginModel">Forgot Password?</b-link>
@@ -36,12 +53,20 @@
       <b-modal @shown="onReset" hide-footer id="ForgotModelShow" title="Login" ref="ForgotModelShow">      
         <b-form-group label="Email:"
           label-for="email">
-            <b-form-input id="forgotEmail"
-              type="email"
+            <b-form-input 
+              id="forgotEmail"
+              name="forgotEmail"
+              type="text"
               v-model="forgot.email"
-              required
+              v-validate="'required|email'"
+              :class="{'input': true, 'invalid-input': errors.has('forgotEmail') }"
               placeholder="Enter email">
           </b-form-input>
+
+          <div v-show="errors.has('forgotEmail')" class="errorDiv">
+            <icon name="exclamation-triangle"></icon>
+            <span>{{ errors.first('forgotEmail') }}</span>
+          </div>
         </b-form-group>
         
         <b-link @click="showLoginModel">Click here to login</b-link>
@@ -74,14 +99,18 @@ export default {
   methods: {
     submitEmail (evt) {
       evt.preventDefault()
-      // Call API for forgot-password
-      Request.post(`${config.apiBaseUrl}/forgot-password`, this.forgot, {'Accept': 'application/json'})
-        .then(response => {
-          console.log('response', response)
-        })
-        .catch(e => {
-          console.log('e', e)
-        })
+      this.$validator.validateAll(evt).then((result) => {
+        if (result) {
+          // Call API for forgot-password
+          Request.post(`${config.apiBaseUrl}/forgot-password`, this.forgot, {'Accept': 'application/json'})
+            .then(response => {
+              console.log('response', response)
+            })
+            .catch(e => {
+              console.log('e', e)
+            })
+        }
+      })
     },
     resetEmail (evt) {
       evt.preventDefault()
@@ -91,14 +120,18 @@ export default {
     },
     onSubmit (evt) {
       evt.preventDefault()
-      // Call API for login
-      Request.post(`${config.apiBaseUrl}/login`, this.form, {'Accept': 'application/json'})
-        .then(response => {
-          console.log('response', response)
-        })
-        .catch(e => {
-          console.log('e', e)
-        })
+      this.$validator.validateAll().then((result) => {
+        if (result) {
+          // Call API for login
+          Request.post(`${config.apiBaseUrl}/login`, this.form, {'Accept': 'application/json'})
+            .then(response => {
+              console.log('response', response)
+            })
+            .catch(e => {
+              console.log('e', e)
+            })
+        }
+      })
     },
     onReset (evt) {
       evt.preventDefault()
