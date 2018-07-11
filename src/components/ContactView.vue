@@ -15,43 +15,74 @@
                 
                 <b-form-group label="Name:"
                   label-for="name">
-                    <b-form-input id="name"
+                    <b-form-input 
+                      id="name"
+                      name="name"
                       type="text"
                       v-model="form.name"
-                      required
+                      v-validate="'required'"
+                      :class="{'input': true, 'invalid-input': errors.has('name') }"
                       placeholder="Enter fullname">
                   </b-form-input>
+
+                  <div v-show="errors.has('name')" class="errorDiv">
+                    <icon name="exclamation-triangle"></icon>
+                    <span>{{ errors.first('name') }}</span>
+                  </div>
                 </b-form-group>
 
                 <b-form-group label="E-mail:"
                   label-for="email">
-                    <b-form-input id="email"
+                    <b-form-input 
+                      name="email"
+                      id="email"
                       type="email"
                       v-model="form.email"
-                      required
+                      v-validate="'required|email'"
+                      :class="{'input': true, 'invalid-input': errors.has('email') }"
                       placeholder="Enter email">
                   </b-form-input>
+
+                  <div v-show="errors.has('email')" class="errorDiv">
+                    <icon name="exclamation-triangle"></icon>
+                    <span>{{ errors.first('email') }}</span>
+                  </div>
                 </b-form-group>
 
                 <b-form-group label="Phone Number:"
                   label-for="number">
-                    <b-form-input id="number"
+                    <b-form-input 
+                      name="number"
+                      id="number"
                       type="text"
                       v-model="form.number"
-                      required
+                      v-validate="'required'"
+                      :class="{'input': true, 'invalid-input': errors.has('number') }"
                       placeholder="Enter Phone number">
                   </b-form-input>
+
+                  <div v-show="errors.has('number')" class="errorDiv">
+                    <icon name="exclamation-triangle"></icon>
+                    <span>{{ errors.first('number') }}</span>
+                  </div>
                 </b-form-group>
 
-                <b-form-textarea label="Message:"
+                <b-form-textarea 
+                  label="Message:"
                   label-for="message"
+                  name="message"
                   id="message"
                   v-model="form.message"
+                  v-validate="'required'"
+                  :class="{'input': true, 'invalid-input': errors.has('message') }"
                   placeholder="Your message"
                   :rows="3"
                   :max-rows="6">
-                    <pre class="mt-3">{{ form.message }}</pre>
                 </b-form-textarea>
+                <div v-show="errors.has('message')" class="errorDiv">
+                  <icon name="exclamation-triangle"></icon>
+                  <span>{{ errors.first('message') }}</span>
+                </div>
 
                   <div style="text-align: center;margin-top: 15px">
                     <b-button type="submit" variant="outline-success">Submit</b-button>
@@ -127,7 +158,11 @@ export default {
   methods: {
     onSubmit (evt) {
       evt.preventDefault()
-      alert(JSON.stringify(this.form))
+      this.$validator.validateAll().then((result) => {
+        if (result) {
+          alert(JSON.stringify(this.form))
+        }
+      })
     },
     onReset (evt) {
       evt.preventDefault()
