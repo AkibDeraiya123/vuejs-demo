@@ -9,6 +9,8 @@ import Authentication from '../auth'
 import EmailVerifyView from '@/components/EmailVerifyView'
 import PageNotFoundView from '@/components/PageNotFoundView'
 import HomeAfterLoginView from '@/components/HomeAfterLoginView'
+import MyProfileView from '@/components/myProfileView'
+import friendListView from '@/components/friendListView'
 
 Vue.use(Router)
 
@@ -44,6 +46,16 @@ export default new Router({
       path: '/contact-us',
       name: 'contact-us',
       component: contactView
+    },
+    {
+      path: '/profile/:name',
+      name: 'profile',
+      component: Authentication.requireAuth ? MyProfileView : HomeView
+    },
+    {
+      path: '/suggested-friend',
+      name: 'suggested-friends',
+      component: Authentication.requireAuth ? friendListView : HomeView
     },
     {
       path: '*',
